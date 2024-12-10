@@ -94,6 +94,10 @@ protected:
 		@return Returns the max hit points of the ship. */
 	virtual float GetMaxHitPoints() const { return m_maxHitPoints; }
 
+	//score value
+	//read/write private variable with no set/get logic should just be protected, yeah?
+	int m_scoreValue = 0;
+	
 
 private:
 

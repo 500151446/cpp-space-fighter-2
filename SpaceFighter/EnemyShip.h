@@ -49,7 +49,7 @@ protected:
 		to prevent all enemy ships from activating at the same time.
 		@return Returns the delay before the enemy ship activates. */
 	virtual double GetDelaySeconds() const { return m_delaySeconds; }
-
+	
 
 private:
 

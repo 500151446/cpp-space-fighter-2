@@ -42,8 +42,10 @@ Level::Level()
 	m_pSectors = new std::vector<GameObject *>[m_totalSectorCount];
 	m_pCollisionManager = new CollisionManager();
 
+	//added initializers
 	m_paused = false;
 	m_pausedTime = 0.0f;
+	m_score = 0;
 	
 	GameObject::SetCurrentLevel(this);
 
@@ -270,9 +272,13 @@ void Level::Draw(SpriteBatch& spriteBatch)
 	}
 
 	//draw pause text if the game is paused
-	//not adding a new screen because this one line does the same thing and
-	//the enemy ships will act differently when the game is paused so just blocking input doesn't solve the problem anyways
 	if (m_paused) spriteBatch.DrawString(m_pFont, new std::string("Paused"), Game::GetScreenCenter(), Color::WHITE, TextAlign::Center);
+	
+	//draw score text
+	Vector2 scoreTextPos = Vector2(Game::GetScreenWidth() - 500.0f, 10.0f);
+	Vector2 scorePos = Vector2(Game::GetScreenWidth() - 10.0f, 10.0f);
+	spriteBatch.DrawString(m_pFont, new std::string("Score: "), scoreTextPos, Color::WHITE, TextAlign::Left);
+	spriteBatch.DrawString(m_pFont, new std::string(std::to_string(m_score)), scorePos, Color::WHITE, TextAlign::Right);
 
 	spriteBatch.End();
 

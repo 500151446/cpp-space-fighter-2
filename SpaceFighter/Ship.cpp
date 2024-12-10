@@ -28,6 +28,9 @@ void Ship::Hit(const float damage)
 	m_hitPoints -= damage;
 	if (m_hitPoints > 0) return;
 
+	//add scorevalue to level score whenever a ship is destroyed
+	//player ship has a value of 0, could make it negative if you were to lose score whenever you lose a life
+	GetCurrentLevel()->AddScore(m_scoreValue);
 	GameObject::Deactivate();
 	GetCurrentLevel()->SpawnExplosion(this);
 }

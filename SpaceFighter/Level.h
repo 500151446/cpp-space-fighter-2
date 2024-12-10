@@ -111,6 +111,8 @@ public:
 
 	//returns the total amount of time the game has been paused
 	double GetPausedTime() const { return m_pausedTime; }
+	//adds to score
+	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }
 
 
 protected:
@@ -167,11 +169,13 @@ private:
 
 	virtual std::vector<GameObject*>* GetSectors() { return m_pSectors; }
 
+	//score
+	int m_score;
 
-	//bool to keep track of whether or not the level is paused
+	//whether or not the level is paused
 	bool m_paused;
 
-	//double to keep track of how much total time the game has been paused because some things use total time to determine where they should be
+	//total time the game has been paused because some things use total time to determine where they should be
 	double m_pausedTime;
 
 	//font for pause text
