@@ -109,6 +109,9 @@ public:
 		return pClosest;
 	}
 
+	//returns the total amount of time the game has been paused
+	double GetPausedTime() const { return m_pausedTime; }
+
 
 protected:
 
@@ -164,4 +167,13 @@ private:
 
 	virtual std::vector<GameObject*>* GetSectors() { return m_pSectors; }
 
+
+	//bool to keep track of whether or not the level is paused
+	bool m_paused;
+
+	//double to keep track of how much total time the game has been paused because some things use total time to determine where they should be
+	double m_pausedTime;
+
+	//font for pause text
+	Font* m_pFont;
 };

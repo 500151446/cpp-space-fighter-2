@@ -12,6 +12,7 @@ Projectile::Projectile()
 
 void Projectile::Update(const GameTime& gameTime)
 {
+
 	if (IsActive())
 	{
 		Vector2 translation = m_direction * m_speed * gameTime.GetElapsedTime();

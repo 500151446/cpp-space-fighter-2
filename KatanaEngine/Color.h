@@ -13,6 +13,7 @@
 */
 
 #pragma once
+#include "../packages/Allegro.5.2.9/build/native/include/allegro5/color.h"
 
 namespace KatanaEngine
 {

@@ -41,6 +41,9 @@ Level::Level()
 
 	m_pSectors = new std::vector<GameObject *>[m_totalSectorCount];
 	m_pCollisionManager = new CollisionManager();
+
+	m_paused = false;
+	m_pausedTime = 0.0f;
 	
 	GameObject::SetCurrentLevel(this);
 
@@ -89,6 +92,11 @@ void Level::LoadContent(ResourceManager& resourceManager)
 {
 	m_pPlayerShip->LoadContent(resourceManager);
 
+	//set the font to use for the pause text
+	Font::SetLoadSize(50, true);
+	Font* pFont = resourceManager.Load<Font>("Fonts\\ethnocentric.ttf");
+	m_pFont = pFont;
+
 	// Setup explosions if they haven't been already
 	Explosion* pExplosion;
 	if (s_explosions.size() == 0) {
@@ -111,12 +119,24 @@ void Level::HandleInput(const InputState& input)
 {
 	if (IsScreenTransitioning()) return;
 
-	m_pPlayerShip->HandleInput(input);
+	//if escape is pressed then toggle paused bool
+	if (input.IsNewKeyPress(Key::ESCAPE)) m_paused = !m_paused;
+	
+	//only handle input for player ship if the game isn't paused
+	if (!m_paused) m_pPlayerShip->HandleInput(input);
+	
 }
 
 
 void Level::Update(const GameTime& gameTime)
 {
+	//update only paused time if level is paused, should cascade down to all objects in the level
+	if (m_paused)
+	{
+		m_pausedTime += gameTime.GetElapsedTime();
+		return;
+	}
+
 	for (unsigned int i = 0; i < m_totalSectorCount; i++)
 	{
 		m_pSectors[i].clear();
@@ -241,12 +261,18 @@ void Level::Draw(SpriteBatch& spriteBatch)
 
 	if (m_pBackground) spriteBatch.Draw(m_pBackground, Vector2::ZERO, Color::WHITE * alpha);
 
+
 	m_gameObjectIt = m_gameObjects.begin();
 	for (; m_gameObjectIt != m_gameObjects.end(); m_gameObjectIt++)
 	{
 		GameObject *pGameObject = (*m_gameObjectIt);
 		pGameObject->Draw(spriteBatch);
 	}
+
+	//draw pause text if the game is paused
+	//not adding a new screen because this one line does the same thing and
+	//the enemy ships will act differently when the game is paused so just blocking input doesn't solve the problem anyways
+	if (m_paused) spriteBatch.DrawString(m_pFont, new std::string("Paused"), Game::GetScreenCenter(), Color::WHITE, TextAlign::Center);
 
 	spriteBatch.End();
 
@@ -255,3 +281,4 @@ void Level::Draw(SpriteBatch& spriteBatch)
 	for (Explosion* pExplosion : s_explosions) pExplosion->Draw(spriteBatch);
 	spriteBatch.End();
 }
+

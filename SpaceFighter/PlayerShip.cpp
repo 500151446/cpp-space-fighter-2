@@ -25,6 +25,7 @@ void PlayerShip::Initialize(Level* pLevel, Vector2& startPosition)
 
 void PlayerShip::HandleInput(const InputState& input)
 {
+
 	if (IsActive())
 	{
 		Vector2 direction;
