@@ -231,7 +231,8 @@ namespace KatanaEngine
 			std::string text = buffer;
 
 			m_pSpriteBatch->Begin();
-			m_pSpriteBatch->DrawString(m_pFrameCounterFont, &text, Vector2(10, 10), color);
+			// Xana - Move FPS to lower left corner
+			m_pSpriteBatch->DrawString(m_pFrameCounterFont, &text, Vector2(10, Game::GetScreenHeight() - 30), color);
 			m_pSpriteBatch->End();
 		}
 		else

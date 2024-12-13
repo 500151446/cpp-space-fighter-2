@@ -114,7 +114,6 @@ public:
 	//adds to score
 	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }
 
-
 protected:
 
 	/** @brief Get a pointer to the collision manager.
@@ -168,6 +167,9 @@ private:
 	virtual unsigned int GetTotalSectorCount() const { return m_totalSectorCount; }
 
 	virtual std::vector<GameObject*>* GetSectors() { return m_pSectors; }
+
+	// Xana - Add texture
+	Texture* m_pHealth;
 
 	//score
 	int m_score;

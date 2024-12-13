@@ -67,6 +67,14 @@ public:
 
 	virtual IAttachment* GetAttachment(const int index);
 
+	// Xana - Getter for being invulnerable
+	virtual bool GetIsInvulnurable() const { return m_isInvulnurable; }
+	// Xana - Setter for hit points
+	virtual void SetHitPoints(float hitpoints) { m_hitPoints = hitpoints; }
+	// Xana - Moved this to public to use in Level.cpp
+	/** @brief Gets the current hit points of the ship.
+		@return Returns the current hit points of the ship. */
+	virtual float GetHitPoints() const { return m_hitPoints; }
 
 protected:
 
@@ -85,10 +93,6 @@ protected:
 		if (m_attachments.find(key) == m_attachments.end()) return nullptr;
 		return dynamic_cast<Weapon *>(m_attachments[key]);
 	}
-
-	/** @brief Gets the current hit points of the ship.
-		@return Returns the current hit points of the ship. */
-	virtual float GetHitPoints() const { return m_hitPoints; }
 
 	/** @brief Gets the max hit points of the ship.
 		@return Returns the max hit points of the ship. */
@@ -111,4 +115,3 @@ private:
 	std::map<std::string, IAttachment *> m_attachments;
 	std::map<std::string, IAttachment*>::iterator m_attachmentIt;
 };
-

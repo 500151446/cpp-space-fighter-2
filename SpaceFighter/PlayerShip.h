@@ -55,6 +55,8 @@ public:
 		@param isConfined True to confine the player ship to the screen, false otherwise. */
 	virtual void ConfineToScreen(const bool isConfined = true) { m_isConfinedToScreen = isConfined; }
 
+	// Xana - Override function to handle player damage
+	virtual void Hit(const float damage) override;
 
 protected:
 

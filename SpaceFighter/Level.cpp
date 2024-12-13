@@ -3,6 +3,7 @@
 #include "EnemyShip.h"
 #include "Blaster.h"
 #include "GameplayScreen.h"
+#include "Ship.h"
 
 std::vector<Explosion *> Level::s_explosions;
 
@@ -24,10 +25,14 @@ void PlayerCollidesWithEnemy(GameObject *pObject1, GameObject *pObject2)
 	bool m = pObject1->HasMask(CollisionType::Player);
 	PlayerShip *pPlayerShip = (PlayerShip *)((m) ? pObject1 : pObject2);
 	EnemyShip *pEnemyShip = (EnemyShip *)((!m) ? pObject1 : pObject2);
-	pPlayerShip->Hit(std::numeric_limits<float>::max());
+
+	// Xana - Take 1 damage when hit
+	pPlayerShip->Hit(1.00f);
+	// Xana - Subtract score when hit
+	GameObject::GetCurrentLevel()->AddScore(-200);
+
 	pEnemyShip->Hit(std::numeric_limits<float>::max());
 }
-
 
 Level::Level()
 {
@@ -93,6 +98,9 @@ Level::~Level()
 void Level::LoadContent(ResourceManager& resourceManager)
 {
 	m_pPlayerShip->LoadContent(resourceManager);
+
+	// Xana - Load health texture
+	m_pHealth = resourceManager.Load<Texture>("Textures\\Health.png");
 
 	//set the font to use for the pause text
 	Font::SetLoadSize(50, true);
@@ -271,6 +279,24 @@ void Level::Draw(SpriteBatch& spriteBatch)
 		pGameObject->Draw(spriteBatch);
 	}
 
+	// Xana - Draw health
+	float hitPoints = m_pPlayerShip->Ship::GetHitPoints();
+	for (int i = 0; i < 3; i++)
+	{
+		if (i < hitPoints)
+		{
+			// testing
+			if (m_pHealth == nullptr)
+			{
+				std::cout << "Could not load health texture!";
+			}
+			else
+			{
+				spriteBatch.Draw(m_pHealth, Vector2(10 + i * 50, 10));
+			}
+		}
+	}
+
 	//draw pause text if the game is paused
 	if (m_paused) spriteBatch.DrawString(m_pFont, new std::string("Paused"), Game::GetScreenCenter(), Color::WHITE, TextAlign::Center);
 	
@@ -287,4 +313,3 @@ void Level::Draw(SpriteBatch& spriteBatch)
 	for (Explosion* pExplosion : s_explosions) pExplosion->Draw(spriteBatch);
 	spriteBatch.End();
 }
-

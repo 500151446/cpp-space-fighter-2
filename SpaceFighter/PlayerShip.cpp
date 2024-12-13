@@ -1,6 +1,7 @@
 
 #include "PlayerShip.h"
 #include "Level.h"
+#include "Ship.h"
 
 void PlayerShip::LoadContent(ResourceManager& resourceManager)
 {
@@ -126,6 +127,22 @@ Vector2 PlayerShip::GetHalfDimensions() const
 {
 	return m_pTexture->GetCenter();
 }
+
+// Xana - Implement three-hit rule
+void PlayerShip::Hit(const float damage)
+{
+	if (GetIsInvulnurable() == true) return;
+
+	// Xana - Set hit point after taking damage
+	float currentHitPoints = GetHitPoints();
+	SetHitPoints(currentHitPoints -= damage);
+
+	if (GetHitPoints() > 0) return;
+
+	GameObject::Deactivate();
+	GetCurrentLevel()->SpawnExplosion(this);
+}
+
 
 void PlayerShip::SetResponsiveness(const float responsiveness)
 {
