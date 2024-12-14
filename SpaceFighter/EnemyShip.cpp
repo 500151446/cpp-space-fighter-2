@@ -41,11 +41,13 @@ void EnemyShip::Initialize(const Vector2 position, const double delaySeconds)
 }
 
 
-void EnemyShip::Hit(const float damage)
+bool EnemyShip::Hit(const float damage)
 {
-	Ship::Hit(damage);
-	// Xana - Moved this to EnemyShip to only increase points when enemies specifically are hit
-	//add scorevalue to level score whenever a ship is destroyed
-	//player ship has a value of 0, could make it negative if you were to lose score whenever you lose a life
-	GetCurrentLevel()->AddScore(m_scoreValue);
+	//hit now returns true if the ship is going to be destroyed by the hit
+	if (Ship::Hit(damage))
+	{
+		
+		return true;
+	}
+	return false;
 }

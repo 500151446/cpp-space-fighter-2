@@ -15,7 +15,19 @@ void PlayerShootsEnemy(GameObject *pObject1, GameObject *pObject2)
 	bool m = pObject1->HasMask(CollisionType::Enemy);
 	EnemyShip *pEnemyShip = (EnemyShip *)((m) ? pObject1 : pObject2);
 	Projectile *pPlayerProjectile = (Projectile *)((!m) ? pObject1 : pObject2);
-	pEnemyShip->Hit(pPlayerProjectile->GetDamage());
+
+	// Tristen - making hit return a bool was so that I could check if an enemy ship was destroyed when shot
+	// which i'm now realizing wasn't necessary in the game's current state because all enemies have 1 hp but oh well
+	if (pEnemyShip->Hit(pPlayerProjectile->GetDamage()))
+	{
+		//add scorevalue to level score whenever an enemy ship is destroyed
+		//player ship has a value of 0, could make it negative if you were to lose score whenever you lose a life
+
+		//this is a weird way to do this but i'm not sure why i can't reference AddScore directly here
+		//probably just some quirk of cpp like how you have to declare things before you reference them 
+		//but it's declared in the base class so I'm a bit lost on that one
+		GameObject::GetCurrentLevel()->AddScore(pEnemyShip->GetScoreValue());
+	}
 	pPlayerProjectile->Deactivate();
 }
 
@@ -29,7 +41,8 @@ void PlayerCollidesWithEnemy(GameObject *pObject1, GameObject *pObject2)
 	// Xana - Take 1 damage when hit
 	pPlayerShip->Hit(1.00f);
 	// Xana - Subtract score when hit
-	GameObject::GetCurrentLevel()->AddScore(-200);
+	// Tristen - Changing this to -100 since that's what you intended
+	GameObject::GetCurrentLevel()->AddScore(-100);
 
 	pEnemyShip->Hit(std::numeric_limits<float>::max());
 }
@@ -47,7 +60,7 @@ Level::Level()
 	m_pSectors = new std::vector<GameObject *>[m_totalSectorCount];
 	m_pCollisionManager = new CollisionManager();
 
-	//added initializers
+	// Tristen - added initializers
 	m_paused = false;
 	m_pausedTime = 0.0f;
 	m_score = 0;
@@ -102,7 +115,7 @@ void Level::LoadContent(ResourceManager& resourceManager)
 	// Xana - Load health texture
 	m_pHealth = resourceManager.Load<Texture>("Textures\\Health.png");
 
-	//set the font to use for the pause text
+	// Tristen - set the font to use for the pause text
 	Font::SetLoadSize(50, true);
 	Font* pFont = resourceManager.Load<Font>("Fonts\\ethnocentric.ttf");
 	m_pFont = pFont;
@@ -129,10 +142,10 @@ void Level::HandleInput(const InputState& input)
 {
 	if (IsScreenTransitioning()) return;
 
-	//if escape is pressed then toggle paused bool
+	// Tristen - if escape is pressed then toggle paused bool
 	if (input.IsNewKeyPress(Key::ESCAPE)) m_paused = !m_paused;
 	
-	//only handle input for player ship if the game isn't paused
+	// Tristen - only handle input for player ship if the game isn't paused
 	if (!m_paused) m_pPlayerShip->HandleInput(input);
 	
 }
@@ -140,7 +153,7 @@ void Level::HandleInput(const InputState& input)
 
 void Level::Update(const GameTime& gameTime)
 {
-	//update only paused time if level is paused, should cascade down to all objects in the level
+	// Tristen - update only paused time if level is paused, should cascade down to all objects in the level
 	if (m_paused)
 	{
 		m_pausedTime += gameTime.GetElapsedTime();
@@ -297,10 +310,10 @@ void Level::Draw(SpriteBatch& spriteBatch)
 		}
 	}
 
-	//draw pause text if the game is paused
+	// Tristen - draw pause text if the game is paused
 	if (m_paused) spriteBatch.DrawString(m_pFont, new std::string("Paused"), Game::GetScreenCenter(), Color::WHITE, TextAlign::Center);
 	
-	//draw score text
+	// Tristen - draw score text
 	Vector2 scoreTextPos = Vector2(Game::GetScreenWidth() - 500.0f, 10.0f);
 	Vector2 scorePos = Vector2(Game::GetScreenWidth() - 10.0f, 10.0f);
 	spriteBatch.DrawString(m_pFont, new std::string("Score: "), scoreTextPos, Color::WHITE, TextAlign::Left);

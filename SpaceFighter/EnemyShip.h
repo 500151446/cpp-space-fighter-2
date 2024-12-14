@@ -31,8 +31,9 @@ public:
 	virtual void Fire() { }
 
 	/** @brief Applies damage to the ship.
-		@param damage The amount of damage to apply. */
-	virtual void Hit(const float damage);
+	@param damage The amount of damage to apply.
+	@return True if the hit destroys the ship */
+	virtual bool Hit(const float damage);
 
 	/** @brief Gets the string representation of the enemy ship.
 		@return Returns the string "Enemy Ship". */

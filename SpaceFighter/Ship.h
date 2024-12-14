@@ -23,8 +23,9 @@ public:
 	virtual void Draw(SpriteBatch& spriteBatch) = 0;
 
 	/** @brief Applies damage to the ship.
-		@param damage The amount of damage to apply. */
-	virtual void Hit(const float damage);
+		@param damage The amount of damage to apply.
+		@return True if the hit destroys the ship */
+	virtual bool Hit(const float damage);
 
 	/** @brief To determine if the ship should take damage when hit.
 		@return True if the ship is invulnerable, false otherwise. */
@@ -75,6 +76,9 @@ public:
 	/** @brief Gets the current hit points of the ship.
 		@return Returns the current hit points of the ship. */
 	virtual float GetHitPoints() const { return m_hitPoints; }
+
+	// Tristen - getter for score value since it's being referenced by level and not ship now
+	virtual int GetScoreValue() const { return m_scoreValue; }
 
 protected:
 

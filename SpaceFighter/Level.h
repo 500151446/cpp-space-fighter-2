@@ -109,10 +109,10 @@ public:
 		return pClosest;
 	}
 
-	//returns the total amount of time the game has been paused
+	//Tristen - returns the total amount of time the game has been paused
 	double GetPausedTime() const { return m_pausedTime; }
-	//adds to score
-	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }
+	//Tristen - adds to score, sets it to zero if it goes negative
+	void AddScore(int scoreToAdd) { m_score += scoreToAdd; if (m_score < 0) m_score = 0; }
 
 protected:
 
@@ -171,15 +171,15 @@ private:
 	// Xana - Add texture
 	Texture* m_pHealth;
 
-	//score
+	// Tristen - score
 	int m_score;
 
-	//whether or not the level is paused
+	// Tristen - whether or not the level is paused
 	bool m_paused;
 
-	//total time the game has been paused because some things use total time to determine where they should be
+	// Tristen - total time the game has been paused because some things use total time to determine where they should be
 	double m_pausedTime;
 
-	//font for pause text
+	// Tristen - font for pause text
 	Font* m_pFont;
 };

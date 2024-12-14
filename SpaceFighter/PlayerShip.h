@@ -56,7 +56,8 @@ public:
 	virtual void ConfineToScreen(const bool isConfined = true) { m_isConfinedToScreen = isConfined; }
 
 	// Xana - Override function to handle player damage
-	virtual void Hit(const float damage) override;
+	// Tristen - Made it a bool like all the other ships to handle hits better
+	virtual bool Hit(const float damage) override;
 
 protected:
 

@@ -129,18 +129,26 @@ Vector2 PlayerShip::GetHalfDimensions() const
 }
 
 // Xana - Implement three-hit rule
-void PlayerShip::Hit(const float damage)
+// Tristen - Implementing the return 
+bool PlayerShip::Hit(const float damage)
 {
-	if (GetIsInvulnurable() == true) return;
+	// Tristen - here you're copying the logic from the base class "Ship"'s implementation of the "Hit" function
+	// but you could just pass the damage along like they do in enemyship.cpp with "Ship::Hit(damage)"
+	// which after the change I made now returns true if the ship is going to be destroyed or false if it won't be
+
+	//all i need is for this to return true or false so I won't rewrite it haha I'll just add return values
+
+	if (GetIsInvulnurable() == true) return false;
 
 	// Xana - Set hit point after taking damage
 	float currentHitPoints = GetHitPoints();
 	SetHitPoints(currentHitPoints -= damage);
 
-	if (GetHitPoints() > 0) return;
+	if (GetHitPoints() > 0) return false;
 
 	GameObject::Deactivate();
 	GetCurrentLevel()->SpawnExplosion(this);
+	return true;
 }
 
 

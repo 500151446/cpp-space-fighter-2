@@ -21,17 +21,16 @@ void Ship::Update(const GameTime& gameTime)
 	GameObject::Update(gameTime);
 }
 
-void Ship::Hit(const float damage)
+bool Ship::Hit(const float damage)
 {
-	if (m_isInvulnurable) return;
+	if (m_isInvulnurable) return false;
 
 	m_hitPoints -= damage;
-	if (m_hitPoints > 0) return;
-
-	// Xana - Original add score was here, it was moved to EnemyShip.cpp
+	if (m_hitPoints > 0) return false;
 
 	GameObject::Deactivate();
 	GetCurrentLevel()->SpawnExplosion(this);
+	return true;
 }
 
 IAttachment* Ship::GetAttachment(const std::string& key)

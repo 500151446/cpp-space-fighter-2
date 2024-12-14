@@ -79,9 +79,10 @@ public:
 		@return The collision radius of the object. */
 	virtual float GetCollisionRadius() const { return m_collisionRadius; }
 
-	/** @brief Hits the object with a specified amount of damage.
-		@param damage The amount of damage to apply. */
-	virtual void Hit(const float damage) { }
+	/** @brief Applies damage to the ship.
+		@param damage The amount of damage to apply.
+		@return True if the hit destroys the ship */
+	virtual bool Hit(const float damage) { return false; }
 
 	/** @brief Check if the object has a specific collision bit-mask.
 		@param mask The bit-mask to check.
